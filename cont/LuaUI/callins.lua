@@ -61,6 +61,8 @@ CallInsList = {
 
   "FeatureCreated",
   "FeatureDestroyed",
+  
+  "SelectionChanged",
 
   "DrawGenesis",
   "DrawWorld",

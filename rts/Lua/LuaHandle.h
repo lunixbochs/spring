@@ -148,6 +148,7 @@ class CLuaHandle : public CEventClient
 
 		void StockpileChanged(const CUnit* owner,
 		                      const CWeapon* weapon, int oldCount);
+		void SelectionChanged(int playerID, vector<int> unitIDs);
 
 		// LuaHandleSynced wraps this to set allowChanges
 		virtual bool RecvLuaMsg(const string& msg, int playerID);

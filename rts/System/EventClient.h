@@ -124,6 +124,7 @@ class CEventClient
 
 		virtual void StockpileChanged(const CUnit* unit,
 		                              const CWeapon* weapon, int oldCount);
+		virtual void SelectionChanged(int playerID, vector<int> unitIDs);
 
 		virtual bool Explosion(int weaponID, const float3& pos, const CUnit* owner);
 

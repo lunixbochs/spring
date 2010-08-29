@@ -4055,6 +4055,7 @@ void CGame::ClientReadNet()
 								selected.push_back(unitid);
 						}
 					}
+					eventHandler.SelectionChanged(player, selected);
 					selectedUnits.NetSelect(selected, player);
 
 					AddTraffic(player, packetCode, dataLength);

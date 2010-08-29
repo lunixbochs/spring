@@ -1113,6 +1113,35 @@ void CLuaHandle::StockpileChanged(const CUnit* unit,
 }
 
 
+void CLuaHandle::SelectionChanged(int playerID, vector<int> unitIDs)
+{
+	LUA_CALL_IN_CHECK(L);
+	lua_checkstack(L, 7);
+
+	int errfunc = SetupTraceback();
+
+	static const LuaHashString cmdStr("SelectionChanged");
+	if (!cmdStr.GetGlobalFunc(L)) {
+		// remove error handler
+		if (errfunc) lua_pop(L, 1);
+		return; // the call is not defined
+	}
+
+	lua_pushnumber(L, playerID);
+
+	lua_createtable(L, unitIDs.size(), 0);
+	for (unsigned int i = 0; i < unitIDs.size(); i++) {
+		lua_pushnumber(L, i + 1);
+		lua_pushnumber(L, unitIDs[i]);
+		lua_rawset(L, -3);
+	}
+	
+	// call the routine
+	RunCallInTraceback(cmdStr, 2, 0, errfunc);
+	return;
+}
+
+
 bool CLuaHandle::RecvLuaMsg(const string& msg, int playerID)
 {
 	LUA_CALL_IN_CHECK(L);

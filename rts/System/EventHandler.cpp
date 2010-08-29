@@ -83,6 +83,7 @@ CEventHandler::CEventHandler()
 	SETUP_EVENT(Explosion, MANAGED_BIT);
 
 	SETUP_EVENT(StockpileChanged, MANAGED_BIT);
+	SETUP_EVENT(SelectionChanged, MANAGED_BIT);
 
 	// unsynced call-ins
 	SETUP_EVENT(Save,           MANAGED_BIT | UNSYNCED_BIT);

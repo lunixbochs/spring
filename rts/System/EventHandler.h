@@ -10,6 +10,8 @@
 #include "EventClient.h"
 #include "EventBatchHandler.h"
 #include "Sim/Units/Unit.h"
+#include "Game/PlayerHandler.h"
+#include "Sim/Misc/TeamHandler.h"
 #include "Sim/Features/Feature.h"
 #include "Sim/Projectiles/Projectile.h"
 
@@ -124,6 +126,7 @@ class CEventHandler
 
 		void StockpileChanged(const CUnit* unit,
 		                      const CWeapon* weapon, int oldCount);
+		void SelectionChanged(int playerID, vector<int> unitIDs);
 
 	public:
 		// Unsynced events
@@ -284,6 +287,7 @@ class CEventHandler
 		EventClientList listExplosion;
 
 		EventClientList listStockpileChanged;
+		EventClientList listSelectionChanged;
 
 		// unsynced
 		EventClientList listSave;
@@ -803,6 +807,25 @@ inline void CEventHandler::StockpileChanged(const CUnit* unit,
 		//const int ecAllyTeam = ec->GetReadAllyTeam();
 		if (ec->CanReadAllyTeam(unitAllyTeam)) {
 			ec->StockpileChanged(unit, weapon, oldCount);
+		}
+	}
+}
+
+
+inline void CEventHandler::SelectionChanged(int playerID, vector<int> unitIDs)
+{
+	const CPlayer* player = playerHandler->Player(playerID);
+	if (player == NULL) {
+		return;
+	}
+	
+	const int playerAllyTeam = teamHandler->AllyTeam(player->team);
+	const int count = listSelectionChanged.size();
+
+	for (int i = 0; i < count; i++) {
+		CEventClient* ec = listSelectionChanged[i];
+		if (ec->CanReadAllyTeam(playerAllyTeam)) {
+			ec->SelectionChanged(playerID, unitIDs);
 		}
 	}
 }

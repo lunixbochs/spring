@@ -138,6 +138,7 @@ local flexCallIns = {
   'UnitMoveFailed',
   'RecvLuaMsg',
   'StockpileChanged',
+  'SelectionChanged',
   'DrawGenesis',
   'DrawWorld',
   'DrawWorldPreUnit',
@@ -1825,6 +1826,12 @@ function widgetHandler:StockpileChanged(unitID, unitDefID, unitTeam,
                        weaponNum, oldCount, newCount)
   end
   return
+end
+
+function widgetHandler:SelectionChanged(playerID, unitIDs)
+  for _,w in ipairs(self.SelectionChangedList) do
+    w:SelectionChanged(playerID, unitIDs)
+  end
 end
 
 

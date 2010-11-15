@@ -4055,7 +4055,6 @@ void CGame::ClientReadNet()
 								selected.push_back(unitid);
 						}
 					}
-					eventHandler.SelectionChanged(player, selected);
 					selectedUnits.NetSelect(selected, player);
 
 					AddTraffic(player, packetCode, dataLength);
@@ -5130,11 +5129,13 @@ void CGame::ReloadCOB(const string& msg, int player)
 
 void CGame::SelectUnits(const string& line)
 {
+	bool selectionChanged = false;
 	const vector<string> &args = CSimpleParser::Tokenize(line, 0);
 	for (int i = 0; i < (int)args.size(); i++) {
 		const string& arg = args[i];
 		if (arg == "clear") {
 			selectedUnits.ClearSelected();
+			selectionChanged = true;
 		}
 		else if ((arg[0] == '+') || (arg[0] == '-')) {
 			char* endPtr;
@@ -5163,7 +5164,12 @@ void CGame::SelectUnits(const string& line)
 			} else {
 				selectedUnits.RemoveUnit(unit);
 			}
+			selectionChanged = true;
 		}
+	}
+	
+	if (selectionChanged) {
+		eventHandler.SelectionChanged(selectedUnits.selectedUnits);
 	}
 }
 

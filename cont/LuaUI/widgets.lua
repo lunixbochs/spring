@@ -1828,9 +1828,9 @@ function widgetHandler:StockpileChanged(unitID, unitDefID, unitTeam,
   return
 end
 
-function widgetHandler:SelectionChanged(playerID, unitIDs)
+function widgetHandler:SelectionChanged(unitIDs)
   for _,w in ipairs(self.SelectionChangedList) do
-    w:SelectionChanged(playerID, unitIDs)
+    w:SelectionChanged(unitIDs)
   end
 end
 

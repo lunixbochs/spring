@@ -91,7 +91,7 @@ void CEventClient::RenderProjectileDestroyed(const CProjectile* proj) {}
 
 void CEventClient::StockpileChanged(const CUnit* unit,
                                     const CWeapon* weapon, int oldCount) {}
-void CEventClient::SelectionChanged(int playerID, vector<int> unitIDs) {}
+void CEventClient::SelectionChanged(const CUnitSet* units) {}
 
 bool CEventClient::Explosion(int weaponID, const float3& pos, const CUnit* owner) { return false; }
 

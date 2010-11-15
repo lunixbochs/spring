@@ -126,7 +126,7 @@ class CEventHandler
 
 		void StockpileChanged(const CUnit* unit,
 		                      const CWeapon* weapon, int oldCount);
-		void SelectionChanged(int playerID, vector<int> unitIDs);
+		void SelectionChanged(const CUnitSet* units);
 
 	public:
 		// Unsynced events
@@ -812,21 +812,13 @@ inline void CEventHandler::StockpileChanged(const CUnit* unit,
 }
 
 
-inline void CEventHandler::SelectionChanged(int playerID, vector<int> unitIDs)
+inline void CEventHandler::SelectionChanged(const CUnitSet* units)
 {
-	const CPlayer* player = playerHandler->Player(playerID);
-	if (player == NULL) {
-		return;
-	}
-	
-	const int playerAllyTeam = teamHandler->AllyTeam(player->team);
 	const int count = listSelectionChanged.size();
 
 	for (int i = 0; i < count; i++) {
 		CEventClient* ec = listSelectionChanged[i];
-		if (ec->CanReadAllyTeam(playerAllyTeam)) {
-			ec->SelectionChanged(playerID, unitIDs);
-		}
+		ec->SelectionChanged(units);
 	}
 }
 

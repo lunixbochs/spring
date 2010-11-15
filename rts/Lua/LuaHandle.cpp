@@ -1113,10 +1113,10 @@ void CLuaHandle::StockpileChanged(const CUnit* unit,
 }
 
 
-void CLuaHandle::SelectionChanged(int playerID, vector<int> unitIDs)
+void CLuaHandle::SelectionChanged(const CUnitSet* units)
 {
 	LUA_CALL_IN_CHECK(L);
-	lua_checkstack(L, 7);
+	lua_checkstack(L, 5);
 
 	int errfunc = SetupTraceback();
 
@@ -1127,17 +1127,15 @@ void CLuaHandle::SelectionChanged(int playerID, vector<int> unitIDs)
 		return; // the call is not defined
 	}
 
-	lua_pushnumber(L, playerID);
-
-	lua_createtable(L, unitIDs.size(), 0);
-	for (unsigned int i = 0; i < unitIDs.size(); i++) {
+	lua_createtable(L, units.size(), 0);
+	for (unsigned int i = 0; i < units.size(); i++) {
 		lua_pushnumber(L, i + 1);
-		lua_pushnumber(L, unitIDs[i]);
+		lua_pushnumber(L, unitIDs[i]->id);
 		lua_rawset(L, -3);
 	}
 	
 	// call the routine
-	RunCallInTraceback(cmdStr, 2, 0, errfunc);
+	RunCallInTraceback(cmdStr, 1, 0, errfunc);
 	return;
 }
 
